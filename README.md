@@ -1,6 +1,6 @@
 # TG Admin Watch
 
-[![CI](https://github.com/your-org/tg-admin-watch/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/tg-admin-watch/actions/workflows/ci.yml)
+[![CI](https://github.com/fraeiy/tg-admin-watch/actions/workflows/ci.yml/badge.svg)](https://github.com/fraeiy/tg-admin-watch/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 
@@ -30,7 +30,7 @@ Monitor selected Telegram groups and automatically forward messages from chosen 
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/your-org/tg-admin-watch.git
+git clone https://github.com/fraeiy/tg-admin-watch.git
 cd tg-admin-watch
 python -m venv .venv
 
@@ -93,7 +93,7 @@ Press `Ctrl+C` to stop.
 # Install Python 3.12+ from https://www.python.org/downloads/
 # Ensure "Add Python to PATH" is checked during installation
 
-git clone https://github.com/your-org/tg-admin-watch.git
+git clone https://github.com/fraeiy/tg-admin-watch.git
 cd tg-admin-watch
 python -m venv .venv
 .venv\Scripts\activate
@@ -112,7 +112,7 @@ tg-admin-watch interactive
 sudo apt update
 sudo apt install python3.12 python3.12-venv git
 
-git clone https://github.com/your-org/tg-admin-watch.git
+git clone https://github.com/fraeiy/tg-admin-watch.git
 cd tg-admin-watch
 python3.12 -m venv .venv
 source .venv/bin/activate
@@ -131,7 +131,7 @@ tg-admin-watch interactive
 # Install Python via Homebrew
 brew install python@3.12 git
 
-git clone https://github.com/your-org/tg-admin-watch.git
+git clone https://github.com/fraeiy/tg-admin-watch.git
 cd tg-admin-watch
 python3.12 -m venv .venv
 source .venv/bin/activate
@@ -150,7 +150,7 @@ tg-admin-watch interactive
 pkg update && pkg upgrade
 pkg install python git
 
-git clone https://github.com/your-org/tg-admin-watch.git
+git clone https://github.com/fraeiy/tg-admin-watch.git
 cd tg-admin-watch
 python -m venv .venv
 source .venv/bin/activate

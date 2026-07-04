@@ -44,9 +44,9 @@ dev = [
 tg-admin-watch = "tg_admin_watch.cli.app:app"
 
 [project.urls]
-Homepage = "https://github.com/your-org/tg-admin-watch"
-Repository = "https://github.com/your-org/tg-admin-watch"
-Issues = "https://github.com/your-org/tg-admin-watch/issues"
+Homepage = "https://github.com/fraeiy/tg-admin-watch"
+Repository = "https://github.com/fraeiy/tg-admin-watch"
+Issues = "https://github.com/fraeiy/tg-admin-watch/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/tg_admin_watch"]

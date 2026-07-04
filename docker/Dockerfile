@@ -2,7 +2,7 @@ FROM python:3.12-slim
 
 LABEL org.opencontainers.image.title="TG Admin Watch"
 LABEL org.opencontainers.image.description="Monitor Telegram groups and forward messages from selected users"
-LABEL org.opencontainers.image.source="https://github.com/your-org/tg-admin-watch"
+LABEL org.opencontainers.image.source="https://github.com/fraeiy/tg-admin-watch"
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
