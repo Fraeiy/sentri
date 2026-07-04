@@ -1,0 +1,20 @@
+services:
+  tg-admin-watch:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: tg-admin-watch
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - tg-data:/data
+    # Interactive auth must be done first:
+    #   docker compose run --rm tg-admin-watch auth
+    # Then start watching:
+    #   docker compose up -d
+    command: watch
+
+volumes:
+  tg-data:
+    driver: local
