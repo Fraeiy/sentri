@@ -1,6 +1,5 @@
 """FastAPI dependencies for the web application."""
 
-
 from fastapi import Depends, HTTPException, Request
 
 from sentri.config.settings import Settings, get_settings

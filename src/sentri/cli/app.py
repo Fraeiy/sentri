@@ -52,7 +52,7 @@ def web(
     try:
         import uvicorn
     except ImportError as exc:
-        print_error("Web dependencies not installed. Run: pip install -e \".[web]\"")
+        print_error('Web dependencies not installed. Run: pip install -e ".[web]"')
         raise typer.Exit(1) from exc
 
     from sentri.config.settings import get_settings

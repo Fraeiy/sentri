@@ -8,11 +8,12 @@ from typing import TYPE_CHECKING
 
 from telethon.errors import SessionPasswordNeededError
 
+from sentri.infrastructure.telegram.client import TelegramClientManager
+
 if TYPE_CHECKING:
     from telethon import TelegramClient
 
-from sentri.config.settings import Settings
-from sentri.infrastructure.telegram.client import TelegramClientManager
+    from sentri.config.settings import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +31,7 @@ class AuthFlowState:
 class WebAuthFlow:
     """Handles Telegram phone/code/2FA authentication via the web UI."""
 
-    _instance: "WebAuthFlow | None" = None
+    _instance: WebAuthFlow | None = None
 
     def __init__(self) -> None:
         self.state = AuthFlowState()
@@ -38,7 +39,7 @@ class WebAuthFlow:
         self._manager: TelegramClientManager | None = None
 
     @classmethod
-    def get_instance(cls) -> "WebAuthFlow":
+    def get_instance(cls) -> WebAuthFlow:
         """Return the global auth flow singleton."""
         if cls._instance is None:
             cls._instance = cls()
