@@ -1,13 +1,13 @@
 FROM python:3.12-slim
 
-LABEL org.opencontainers.image.title="TG Admin Watch"
+LABEL org.opencontainers.image.title="Sentri"
 LABEL org.opencontainers.image.description="Monitor Telegram groups and forward messages from selected users"
-LABEL org.opencontainers.image.source="https://github.com/fraeiy/tg-admin-watch"
+LABEL org.opencontainers.image.source="https://github.com/Fraeiy/sentri"
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
-    TG_ADMIN_WATCH_DATA_DIR=/data
+    SENTRI_DATA_DIR=/data
 
 WORKDIR /app
 
@@ -29,5 +29,5 @@ USER appuser
 
 VOLUME ["/data"]
 
-ENTRYPOINT ["tg-admin-watch"]
+ENTRYPOINT ["sentri"]
 CMD ["watch"]

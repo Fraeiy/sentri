@@ -1,6 +1,6 @@
 """Tests for notification backend registry."""
 
-from tg_admin_watch.infrastructure.notifications.base import (
+from sentri.infrastructure.notifications.base import (
     NotificationRegistry,
     notification_registry,
 )
@@ -37,7 +37,7 @@ class TestNotificationRegistry:
         class ConcreteBackend(DummyBackend):
             pass
 
-        from tg_admin_watch.infrastructure.notifications.base import BaseNotificationBackend
+        from sentri.infrastructure.notifications.base import BaseNotificationBackend
 
         # Register a minimal concrete backend
         class MinimalBackend(BaseNotificationBackend):

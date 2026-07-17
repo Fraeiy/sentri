@@ -1,16 +1,16 @@
 services:
-  tg-admin-watch:
+  sentri:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    container_name: tg-admin-watch
+    container_name: sentri
     restart: unless-stopped
     env_file:
       - .env
     volumes:
       - tg-data:/data
     # Interactive auth must be done first:
-    #   docker compose run --rm tg-admin-watch auth
+    #   docker compose run --rm sentri auth
     # Then start watching:
     #   docker compose up -d
     command: watch

@@ -1,6 +1,6 @@
-# TG Admin Watch
+# Sentri
 
-[![CI](https://github.com/fraeiy/tg-admin-watch/actions/workflows/ci.yml/badge.svg)](https://github.com/fraeiy/tg-admin-watch/actions/workflows/ci.yml)
+[![CI](https://github.com/Fraeiy/sentri/actions/workflows/ci.yml/badge.svg)](https://github.com/Fraeiy/sentri/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 
@@ -30,8 +30,8 @@ Monitor selected Telegram groups and automatically forward messages from chosen 
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/fraeiy/tg-admin-watch.git
-cd tg-admin-watch
+git clone https://github.com/Fraeiy/sentri.git
+cd sentri
 python -m venv .venv
 
 # Windows
@@ -59,7 +59,7 @@ TELEGRAM_API_HASH=your_api_hash_here
 ### 3. Authenticate
 
 ```bash
-tg-admin-watch auth
+sentri auth
 ```
 
 Enter your phone number, verification code, and 2FA password if enabled. A session file is saved to `./data/session.session`.
@@ -68,22 +68,61 @@ Enter your phone number, verification code, and 2FA password if enabled. A sessi
 
 ```bash
 # Interactive menu (recommended for first-time setup)
-tg-admin-watch interactive
+sentri interactive
 
 # Or use individual commands:
-tg-admin-watch config set-destination   # Where to forward messages
-tg-admin-watch groups add               # Add a group to monitor
-tg-admin-watch users add                # Add users to watch (by user ID)
-tg-admin-watch users sync-admins        # Auto-discover group admins
+sentri config set-destination   # Where to forward messages
+sentri groups add               # Add a group to monitor
+sentri users add                # Add users to watch (by user ID)
+sentri users sync-admins        # Auto-discover group admins
 ```
 
 ### 5. Start watching
 
 ```bash
-tg-admin-watch watch
+sentri watch
 ```
 
 Press `Ctrl+C` to stop.
+
+## Web Dashboard
+
+Sentri includes a browser-based UI that mirrors the CLI — manage groups, users, destination, authentication, and start/stop the watcher without the terminal.
+
+### Install web dependencies
+
+```bash
+pip install -e ".[web]"
+```
+
+### Launch
+
+```bash
+sentri web
+```
+
+Open **http://127.0.0.1:8080** in your browser.
+
+### Web features
+
+- Dashboard with live status
+- Telegram login (phone → code → 2FA)
+- Add groups and users from Telegram dialogs
+- Set destination chat
+- Start/stop background watcher
+- Sync group admins
+
+### Web configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SENTRI_WEB_HOST` | `127.0.0.1` | Bind address |
+| `SENTRI_WEB_PORT` | `8080` | Bind port |
+| `SENTRI_WEB_TOKEN` | *(none)* | Optional access token |
+
+When `WEB_TOKEN` is set, append `?token=your_token` to the URL or send `Authorization: Bearer your_token`.
+
+> **Security:** Bind to `127.0.0.1` by default. Only expose to your network with a `WEB_TOKEN` set.
 
 ## Installation by Platform
 
@@ -93,8 +132,8 @@ Press `Ctrl+C` to stop.
 # Install Python 3.12+ from https://www.python.org/downloads/
 # Ensure "Add Python to PATH" is checked during installation
 
-git clone https://github.com/fraeiy/tg-admin-watch.git
-cd tg-admin-watch
+git clone https://github.com/Fraeiy/sentri.git
+cd sentri
 python -m venv .venv
 .venv\Scripts\activate
 pip install -e ".[dev]"
@@ -102,8 +141,8 @@ pip install -e ".[dev]"
 copy .env.example .env
 # Edit .env with your API credentials
 
-tg-admin-watch auth
-tg-admin-watch interactive
+sentri auth
+sentri interactive
 ```
 
 ### Linux (Debian/Ubuntu)
@@ -112,8 +151,8 @@ tg-admin-watch interactive
 sudo apt update
 sudo apt install python3.12 python3.12-venv git
 
-git clone https://github.com/fraeiy/tg-admin-watch.git
-cd tg-admin-watch
+git clone https://github.com/Fraeiy/sentri.git
+cd sentri
 python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
@@ -121,8 +160,8 @@ pip install -e ".[dev]"
 cp .env.example .env
 nano .env  # Set API credentials
 
-tg-admin-watch auth
-tg-admin-watch interactive
+sentri auth
+sentri interactive
 ```
 
 ### macOS
@@ -131,8 +170,8 @@ tg-admin-watch interactive
 # Install Python via Homebrew
 brew install python@3.12 git
 
-git clone https://github.com/fraeiy/tg-admin-watch.git
-cd tg-admin-watch
+git clone https://github.com/Fraeiy/sentri.git
+cd sentri
 python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
@@ -140,8 +179,8 @@ pip install -e ".[dev]"
 cp .env.example .env
 # Edit .env with your API credentials
 
-tg-admin-watch auth
-tg-admin-watch interactive
+sentri auth
+sentri interactive
 ```
 
 ### Android (Termux)
@@ -150,8 +189,8 @@ tg-admin-watch interactive
 pkg update && pkg upgrade
 pkg install python git
 
-git clone https://github.com/fraeiy/tg-admin-watch.git
-cd tg-admin-watch
+git clone https://github.com/Fraeiy/sentri.git
+cd sentri
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
@@ -159,13 +198,13 @@ pip install -e .
 cp .env.example .env
 nano .env  # Set API credentials
 
-tg-admin-watch auth
-tg-admin-watch interactive
+sentri auth
+sentri interactive
 
 # Run in background with tmux:
 pkg install tmux
 tmux new -s tgwatch
-tg-admin-watch watch
+sentri watch
 # Detach: Ctrl+B then D
 ```
 
@@ -175,22 +214,23 @@ tg-admin-watch watch
 
 | Command | Description |
 |---------|-------------|
-| `tg-admin-watch auth` | Authenticate with Telegram |
-| `tg-admin-watch watch` | Start monitoring and forwarding |
-| `tg-admin-watch status` | Show configuration summary |
-| `tg-admin-watch interactive` | Launch interactive menu |
-| `tg-admin-watch groups list` | List monitored groups |
-| `tg-admin-watch groups add` | Add a group interactively |
-| `tg-admin-watch groups enable <id>` | Enable a group |
-| `tg-admin-watch groups disable <id>` | Disable a group |
-| `tg-admin-watch groups edit <id>` | Edit group settings |
-| `tg-admin-watch groups remove <id>` | Remove a group |
-| `tg-admin-watch users list <group_id>` | List watched users |
-| `tg-admin-watch users add <group_id>` | Add a user (matched by ID) |
-| `tg-admin-watch users sync-admins <group_id>` | Sync admin users from Telegram |
-| `tg-admin-watch users remove <id>` | Remove a watched user |
-| `tg-admin-watch config set-destination` | Set global forward destination |
-| `tg-admin-watch config show` | Show all configuration |
+| `sentri auth` | Authenticate with Telegram |
+| `sentri watch` | Start monitoring and forwarding |
+| `sentri web` | Launch the web dashboard |
+| `sentri status` | Show configuration summary |
+| `sentri interactive` | Launch interactive menu |
+| `sentri groups list` | List monitored groups |
+| `sentri groups add` | Add a group interactively |
+| `sentri groups enable <id>` | Enable a group |
+| `sentri groups disable <id>` | Disable a group |
+| `sentri groups edit <id>` | Edit group settings |
+| `sentri groups remove <id>` | Remove a group |
+| `sentri users list <group_id>` | List watched users |
+| `sentri users add <group_id>` | Add a user (matched by ID) |
+| `sentri users sync-admins <group_id>` | Sync admin users from Telegram |
+| `sentri users remove <id>` | Remove a watched user |
+| `sentri config set-destination` | Set global forward destination |
+| `sentri config show` | Show all configuration |
 
 ### Watch Modes
 
@@ -202,7 +242,7 @@ tg-admin-watch watch
 
 ## User ID Matching
 
-Usernames on Telegram can change at any time. TG Admin Watch stores and matches users by their **immutable numeric user ID** internally. The CLI displays usernames and display names for convenience, but all matching logic uses `user_id`.
+Usernames on Telegram can change at any time. Sentri stores and matches users by their **immutable numeric user ID** internally. The CLI displays usernames and display names for convenience, but all matching logic uses `user_id`.
 
 ```
 CLI display:  Alice Smith · @alice · id:123456789
@@ -216,10 +256,10 @@ Internal key: user_id = 123456789
 docker compose build
 
 # Authenticate (interactive, one-time)
-docker compose run --rm tg-admin-watch auth
+docker compose run --rm sentri auth
 
 # Configure (interactive)
-docker compose run --rm tg-admin-watch interactive
+docker compose run --rm sentri interactive
 
 # Start watching
 docker compose up -d
@@ -233,7 +273,7 @@ Data (session, database, logs) is persisted in the `tg-data` Docker volume.
 ## Architecture
 
 ```
-src/tg_admin_watch/
+src/sentri/
 ├── cli/                    # Typer CLI + Rich UI
 ├── config/                 # Pydantic settings
 ├── core/
@@ -256,7 +296,7 @@ The codebase follows **clean architecture** principles:
 ### Adding a New Notification Backend
 
 ```python
-from tg_admin_watch.infrastructure.notifications.base import (
+from sentri.infrastructure.notifications.base import (
     BaseNotificationBackend,
     notification_registry,
 )
@@ -278,16 +318,16 @@ notification_registry.register("discord", DiscordBackend)
 
 ## Configuration
 
-All configuration is stored in SQLite (`./data/tg_admin_watch.db` by default). Environment variables control runtime settings:
+All configuration is stored in SQLite (`./data/sentri.db` by default). Environment variables control runtime settings:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `TELEGRAM_API_ID` | *(required)* | Telegram API ID |
 | `TELEGRAM_API_HASH` | *(required)* | Telegram API hash |
-| `TG_ADMIN_WATCH_DATA_DIR` | `./data` | Data directory |
-| `TG_ADMIN_WATCH_LOG_LEVEL` | `INFO` | Log level |
-| `TG_ADMIN_WATCH_RECONNECT_MAX_DELAY` | `300` | Max reconnect delay (seconds) |
-| `TG_ADMIN_WATCH_RATE_LIMIT_MAX_RETRIES` | `5` | Max rate limit retries |
+| `SENTRI_DATA_DIR` | `./data` | Data directory |
+| `SENTRI_LOG_LEVEL` | `INFO` | Log level |
+| `SENTRI_RECONNECT_MAX_DELAY` | `300` | Max reconnect delay (seconds) |
+| `SENTRI_RATE_LIMIT_MAX_RETRIES` | `5` | Max rate limit retries |
 
 ## Development
 
@@ -303,7 +343,7 @@ ruff check src tests
 ruff format src tests
 
 # Type check
-mypy src/tg_admin_watch --ignore-missing-imports
+mypy src/sentri --ignore-missing-imports
 ```
 
 ## Contributing

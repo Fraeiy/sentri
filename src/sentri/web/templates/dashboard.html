@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Sentri{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>Dashboard</h1>
+  <p class="subtitle">Monitor groups and forward messages from selected users</p>
+</section>
+
+<div class="grid-3">
+  <div class="card stat-card">
+    <div class="stat-label">Telegram</div>
+    <div class="stat-value">
+      {% if authenticated %}
+        <span class="badge badge-green">Connected</span>
+      {% else %}
+        <span class="badge badge-red">Not authenticated</span>
+      {% endif %}
+    </div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-label">Groups</div>
+    <div class="stat-value">{{ groups_enabled }} / {{ groups|length }} enabled</div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-label">Destination</div>
+    <div class="stat-value">{{ destination_title or "Not set" }}</div>
+    {% if destination_chat_id %}
+      <div class="stat-meta">chat_id: {{ destination_chat_id }}</div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="grid-2">
+  <!-- Watch control -->
+  <section class="card">
+    <h2>Watcher</h2>
+    <p class="hint">Start or stop message monitoring from the browser.</p>
+    <div id="watch-panel" class="watch-panel">
+      {% if watch_running %}
+        <span class="badge badge-green pulse">Running</span>
+      {% else %}
+        <span class="badge badge-gray">Stopped</span>
+      {% endif %}
+      {% if watch_error %}
+        <p class="error-text">{{ watch_error }}</p>
+      {% endif %}
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="startWatch()">▶ Start Watch</button>
+      <button class="btn btn-secondary" onclick="stopWatch()">■ Stop Watch</button>
+    </div>
+  </section>
+
+  <!-- Auth -->
+  <section class="card" id="auth-section">
+    <h2>Telegram Login</h2>
+    {% if authenticated %}
+      <p class="success-text">✓ Session active. You're authenticated.</p>
+    {% else %}
+      <div id="auth-flow">
+        <div id="auth-step-phone">
+          <label>Phone number (with country code)</label>
+          <input type="tel" id="auth-phone" placeholder="+1234567890" class="input">
+          <button class="btn btn-primary" onclick="sendAuthCode()">Send Code</button>
+        </div>
+        <div id="auth-step-code" class="hidden">
+          <label>Verification code</label>
+          <input type="text" id="auth-code" placeholder="12345" class="input">
+          <button class="btn btn-primary" onclick="submitAuthCode()">Verify</button>
+        </div>
+        <div id="auth-step-password" class="hidden">
+          <label>2FA Password</label>
+          <input type="password" id="auth-password" class="input">
+          <button class="btn btn-primary" onclick="submitAuthPassword()">Submit</button>
+        </div>
+      </div>
+    {% endif %}
+  </section>
+</div>
+
+<!-- Destination -->
+<section class="card">
+  <h2>Destination Chat</h2>
+  <p class="hint">Where forwarded messages are sent.</p>
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="loadDialogs('destination-picker')">Load Chats</button>
+  </div>
+  <div id="destination-picker" class="picker-list"></div>
+</section>
+
+<!-- Groups -->
+<section class="card">
+  <div class="card-header">
+    <h2>Monitored Groups</h2>
+    <button class="btn btn-secondary btn-sm" onclick="loadTelegramGroups()">+ Add from Telegram</button>
+  </div>
+  <div id="telegram-groups-picker" class="picker-list hidden"></div>
+  <div id="groups-table">
+    {% if groups %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Chat ID</th>
+          <th>Mode</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for g in groups %}
+        <tr id="group-row-{{ g.id }}">
+          <td>{{ g.title or "(unnamed)" }}</td>
+          <td><code>{{ g.chat_id }}</code></td>
+          <td>
+            <select class="input input-sm" onchange="updateGroupMode({{ g.id }}, this.value)">
+              <option value="selected_users" {% if g.watch_mode.value == 'selected_users' %}selected{% endif %}>selected_users</option>
+              <option value="admins_only" {% if g.watch_mode.value == 'admins_only' %}selected{% endif %}>admins_only</option>
+              <option value="admins_and_selected" {% if g.watch_mode.value == 'admins_and_selected' %}selected{% endif %}>admins_and_selected</option>
+            </select>
+          </td>
+          <td>
+            {% if g.enabled %}
+              <span class="badge badge-green">enabled</span>
+            {% else %}
+              <span class="badge badge-gray">disabled</span>
+            {% endif %}
+          </td>
+          <td class="actions">
+            <button class="btn btn-sm" onclick="toggleGroup({{ g.id }}, {{ 'false' if g.enabled else 'true' }})">
+              {{ 'Disable' if g.enabled else 'Enable' }}
+            </button>
+            <button class="btn btn-sm" onclick="showUsers({{ g.id }}, '{{ g.title | e }}')">Users</button>
+            <button class="btn btn-sm" onclick="syncAdmins({{ g.id }})">Sync Admins</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteGroup({{ g.id }})">Remove</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="hint">No groups yet. Click "Add from Telegram" above.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Users panel (modal-style) -->
+<section class="card hidden" id="users-panel">
+  <div class="card-header">
+    <h2>Watched Users — <span id="users-group-title"></span></h2>
+    <button class="btn btn-sm" onclick="hideUsers()">✕ Close</button>
+  </div>
+  <input type="hidden" id="users-group-id">
+  <div class="btn-row">
+    <button class="btn btn-secondary btn-sm" onclick="loadParticipants()">+ Add from Group Members</button>
+  </div>
+  <div id="participants-picker" class="picker-list hidden"></div>
+  <div id="users-table"></div>
+</section>
+{% endblock %}

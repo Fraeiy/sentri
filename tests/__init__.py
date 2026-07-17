@@ -1,1 +1,1 @@
-"""Test suite for TG Admin Watch."""
+"""Test suite for Sentri."""

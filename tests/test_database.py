@@ -4,7 +4,7 @@ import sqlite3
 
 import pytest
 
-from tg_admin_watch.core.models import (
+from sentri.core.models import (
     ForwardedMessageRecord,
     MonitoredGroup,
     WatchedUser,

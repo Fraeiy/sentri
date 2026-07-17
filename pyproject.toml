@@ -3,13 +3,13 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "tg-admin-watch"
+name = "sentri"
 version = "0.1.0"
 description = "Monitor Telegram groups and forward messages from selected users to a destination chat"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
-authors = [{ name = "TG Admin Watch Contributors" }]
+authors = [{ name = "Sentri Contributors" }]
 keywords = ["telegram", "telethon", "monitoring", "forwarding"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -36,20 +36,31 @@ dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
     "pytest-cov>=4.1.0",
+    "httpx>=0.27.0",
     "ruff>=0.3.0,<1.0.0",
     "mypy>=1.8.0,<2.0.0",
 ]
+web = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.27.0",
+    "jinja2>=3.1.0",
+    "python-multipart>=0.0.9",
+]
 
 [project.scripts]
-tg-admin-watch = "tg_admin_watch.cli.app:app"
+sentri = "sentri.cli.app:app"
 
 [project.urls]
-Homepage = "https://github.com/fraeiy/tg-admin-watch"
-Repository = "https://github.com/fraeiy/tg-admin-watch"
-Issues = "https://github.com/fraeiy/tg-admin-watch/issues"
+Homepage = "https://github.com/Fraeiy/sentri"
+Repository = "https://github.com/Fraeiy/sentri"
+Issues = "https://github.com/Fraeiy/sentri/issues"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/tg_admin_watch"]
+packages = ["src/sentri"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/sentri/web/templates" = "sentri/web/templates"
+"src/sentri/web/static" = "sentri/web/static"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -64,6 +75,9 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "B", "SIM", "TCH"]
 
+[tool.ruff.lint.per-file-ignores]
+"src/sentri/web/**/*.py" = ["B008"]
+
 [tool.mypy]
 python_version = "3.12"
 strict = true
@@ -71,7 +85,7 @@ warn_return_any = true
 warn_unused_configs = true
 
 [tool.coverage.run]
-source = ["tg_admin_watch"]
+source = ["sentri"]
 branch = true
 
 [tool.coverage.report]

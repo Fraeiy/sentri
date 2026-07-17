@@ -19,6 +19,6 @@ def tmp_db_path(tmp_path: Path) -> Path:
 @pytest.fixture
 def repository(tmp_db_path: Path):
     """Return a DatabaseRepository backed by a temporary database."""
-    from tg_admin_watch.infrastructure.database.repository import DatabaseRepository
+    from sentri.infrastructure.database.repository import DatabaseRepository
 
     return DatabaseRepository(tmp_db_path)

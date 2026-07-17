@@ -2,8 +2,8 @@
 
 from datetime import UTC, datetime
 
-from tg_admin_watch.core.models import MonitoredGroup, TelegramUserInfo
-from tg_admin_watch.infrastructure.telegram.formatter import MessageFormatter
+from sentri.core.models import MonitoredGroup, TelegramUserInfo
+from sentri.infrastructure.telegram.formatter import MessageFormatter
 
 
 class TestMessageFormatter:
